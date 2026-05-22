@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hote Naveen — ERP Business Analyst & BI Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── CSS Custom Properties ─────────────────────────────── */
+:root {
+  --accent: #6366f1;
+  --accent-teal: #2dd4bf;
+  --accent-glow: rgba(99,102,241,0.35);
+  --teal-glow: rgba(45,212,191,0.25);
+  --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px;
+  --sp-6: 48px; --sp-8: 64px; --sp-12: 96px;
+  --radius: 12px; --radius-sm: 6px;
+  --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="dark"] {
+  --bg: #0a0a0f; --surface: #111118; --card: #16161f;
+  --border: rgba(255,255,255,0.07);
+  --text: #f1f5f9; --text-sec: #94a3b8; --text-muted: #475569;
+  --nav-bg: rgba(10,10,15,0.85);
+  --timeline-line: rgba(99,102,241,0.4);
+}
+[data-theme="light"] {
+  --bg: #f8fafc; --surface: #ffffff; --card: #f1f5f9;
+  --border: rgba(0,0,0,0.08);
+  --text: #0f172a; --text-sec: #334155; --text-muted: #94a3b8;
+  --nav-bg: rgba(248,250,252,0.85);
+  --timeline-line: rgba(99,102,241,0.5);
+}
+
+/* ── Reset & Base ──────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--bg);color:var(--text);
+  line-height:1.7;
+  transition:background var(--transition),color var(--transition);
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+
+/* ── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+
+/* ── Typography ────────────────────────────────────────── */
+.hero-name{font-family:'DM Serif Display',serif;font-size:clamp(40px,8vw,80px);letter-spacing:-0.02em;line-height:1.1}
+h2.section-title{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-0.02em;line-height:1.2;margin-bottom:var(--sp-6)}
+h3{font-size:clamp(18px,2.5vw,24px);font-weight:600;line-height:1.2}
+.label{font-family:'Fira Code',monospace;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent)}
+.fira{font-family:'Fira Code',monospace}
+
+/* ── Fade-up animation ─────────────────────────────────── */
+.fade-up{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease}
+.fade-up.visible{opacity:1;transform:none}
+
+/* ── Navbar ────────────────────────────────────────────── */
+#navbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--sp-4);height:64px;
+  background:var(--nav-bg);
+  border-bottom:1px solid transparent;
+  transition:border-color var(--transition),backdrop-filter var(--transition),background var(--transition);
+}
+#navbar.scrolled{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-color:var(--border)}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--text)}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:var(--sp-4)}
+.nav-links a{font-size:14px;font-weight:500;color:var(--text-sec);transition:color var(--transition);position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--accent);transition:width var(--transition)}
+.nav-links a.active,
+.nav-links a:hover{color:var(--text)}
+.nav-links a.active::after,
+.nav-links a:hover::after{width:100%}
+.nav-actions{display:flex;align-items:center;gap:var(--sp-2)}
+.theme-toggle{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:background var(--transition),transform var(--transition);
+}
+.theme-toggle:hover{transform:rotate(20deg)}
+.btn-hire{
+  padding:8px 20px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;
+  background:var(--accent);color:#fff;
+  box-shadow:0 0 20px var(--accent-glow);
+  transition:transform var(--transition),box-shadow var(--transition);
+}
+.btn-hire:hover{transform:translateY(-2px);box-shadow:0 4px 32px var(--accent-glow)}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:4px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:var(--transition)}
+
+/* ── Hero ──────────────────────────────────────────────── */
+#hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;padding:var(--sp-12) var(--sp-4);text-align:center;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(99,102,241,0.15) 0%,transparent 70%);
+}
+/* CSS mesh grid */
+.hero-grid{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(var(--border) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);
+  animation:gridPulse 8s ease-in-out infinite;
+}
+@keyframes gridPulse{0%,100%{opacity:0.4}50%{opacity:0.8}}
+.hero-content{position:relative;z-index:1;max-width:860px}
+.hero-name{opacity:0;animation:fadeInName 1s ease 0.2s forwards}
+@keyframes fadeInName{to{opacity:1}}
+.hero-role{
+  font-size:clamp(18px,3vw,26px);font-weight:400;color:var(--accent-teal);
+  min-height:40px;margin:var(--sp-2) 0 var(--sp-3);
+  font-family:'Fira Code',monospace;
+  opacity:0;animation:fadeInName 1s ease 0.6s forwards;
+}
+.hero-bio{
+  font-size:clamp(15px,2vw,18px);color:var(--text-sec);max-width:600px;
+  margin:0 auto var(--sp-4);
+  opacity:0;animation:fadeInName 1s ease 0.9s forwards;
+}
+.hero-ctas{
+  display:flex;flex-wrap:wrap;gap:var(--sp-2);justify-content:center;
+  opacity:0;animation:fadeInName 1s ease 1.1s forwards;
+}
+.btn-primary{
+  padding:14px 32px;border-radius:var(--radius-sm);font-size:16px;font-weight:600;
+  background:var(--accent);color:#fff;
+  box-shadow:0 0 32px var(--accent-glow);
+  transition:transform var(--transition),box-shadow var(--transition);
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 48px var(--accent-glow)}
+.btn-outline{
+  padding:14px 32px;border-radius:var(--radius-sm);font-size:16px;font-weight:600;
+  border:1px solid var(--border);color:var(--text);background:var(--card);
+  transition:transform var(--transition),border-color var(--transition),box-shadow var(--transition);
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-outline:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 4px 24px var(--accent-glow)}
+
+/* ── Section common ────────────────────────────────────── */
+section{padding:var(--sp-12) var(--sp-4)}
+.container{max-width:1080px;margin:0 auto}
+.section-header{margin-bottom:var(--sp-6)}
+.section-header .label{margin-bottom:var(--sp-1)}
+
+/* ── About ─────────────────────────────────────────────── */
+#about .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-8);align-items:center}
+.about-bio{font-size:17px;color:var(--text-sec);line-height:1.8}
+.about-bio strong{color:var(--text)}
+.currently-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;border-radius:99px;
+  background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);
+  font-size:13px;font-weight:500;color:var(--accent);
+  margin-bottom:var(--sp-3);
+}
+.currently-badge::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--accent-teal);animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-3)}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:var(--sp-3);text-align:center;
+  transition:transform var(--transition),border-color var(--transition);
+}
+.stat-card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.stat-number{font-family:'DM Serif Display',serif;font-size:40px;color:var(--accent);line-height:1}
+.stat-label{font-size:13px;color:var(--text-muted);margin-top:4px}
+
+/* ── Experience / Timeline ─────────────────────────────── */
+.timeline{position:relative;padding-left:var(--sp-6)}
+.timeline::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,var(--accent),var(--accent-teal),transparent);
+  border-radius:2px;
+}
+.tl-item{position:relative;margin-bottom:var(--sp-4)}
+.tl-dot{
+  position:absolute;left:calc(-1 * var(--sp-6) - 5px);top:6px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 12px var(--accent-glow);
+  z-index:1;
+}
+.tl-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:border-color var(--transition);
+}
+.tl-card:hover{border-color:rgba(99,102,241,0.4)}
+.tl-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:var(--sp-3) var(--sp-4);cursor:pointer;gap:var(--sp-3);
+  transition:background var(--transition);
+}
+.tl-header:hover{background:rgba(255,255,255,0.02)}
+.tl-company-info{display:flex;align-items:center;gap:var(--sp-2)}
+.company-avatar{
+  width:44px;height:44px;border-radius:var(--radius-sm);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:16px;color:#fff;flex-shrink:0;
+}
+.tl-role{font-size:16px;font-weight:600;color:var(--text)}
+.tl-company{font-size:14px;color:var(--text-muted)}
+.tl-meta{text-align:right;flex-shrink:0}
+.tl-date{font-family:'Fira Code',monospace;font-size:12px;color:var(--text-muted)}
+.tl-chevron{font-size:12px;color:var(--text-muted);transition:transform var(--transition);margin-left:var(--sp-2)}
+.tl-item.open .tl-chevron{transform:rotate(180deg)}
+.tl-body{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.45s cubic-bezier(0.4,0,0.2,1),padding var(--transition);
+  padding:0 var(--sp-4);
+}
+.tl-item.open .tl-body{max-height:600px;padding:0 var(--sp-4) var(--sp-4)}
+.tl-body ul{display:flex;flex-direction:column;gap:10px}
+.tl-body li{
+  font-size:15px;color:var(--text-sec);padding-left:20px;position:relative;
+}
+.tl-body li::before{
+  content:'▹';position:absolute;left:0;color:var(--accent-teal);font-size:14px;top:1px;
+}
+
+/* ── Skills ────────────────────────────────────────────── */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--sp-4)}
+.skill-group{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:var(--sp-4)}
+.skill-group-title{font-size:14px;font-weight:600;color:var(--accent);margin-bottom:var(--sp-3);font-family:'Fira Code',monospace;letter-spacing:0.06em}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:var(--sp-3)}
+.pill{
+  padding:6px 14px;border-radius:99px;font-size:13px;font-weight:500;
+  background:var(--surface);border:1px solid var(--border);color:var(--text-sec);
+  transition:border-color var(--transition),color var(--transition),transform var(--transition);
+}
+.pill:hover{border-color:var(--accent);color:var(--text);transform:translateY(-2px)}
+.progress-items{display:flex;flex-direction:column;gap:12px}
+.progress-item{}
+.progress-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;color:var(--text-sec)}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-fill{
+  height:100%;border-radius:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-teal));
+  width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── Certifications / Education ────────────────────────── */
+.cert-edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4)}
+.ce-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:var(--sp-4);display:flex;gap:var(--sp-3);align-items:flex-start;
+  transition:transform var(--transition),border-color var(--transition),box-shadow var(--transition);
+}
+.ce-card:hover{transform:translateY(-4px);border-color:rgba(99,102,241,0.35);box-shadow:0 8px 32px rgba(99,102,241,0.1)}
+.ce-icon{
+  width:48px;height:48px;border-radius:var(--radius-sm);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+}
+.ce-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
+.ce-issuer{font-size:13px;color:var(--text-muted)}
+.ce-year{font-family:'Fira Code',monospace;font-size:12px;color:var(--accent);margin-top:6px}
+
+/* ── Contact ───────────────────────────────────────────── */
+#contact .contact-inner{
+  max-width:640px;margin:0 auto;text-align:center;
+}
+.contact-headline{font-family:'DM Serif Display',serif;font-size:clamp(28px,5vw,44px);margin-bottom:var(--sp-2)}
+.contact-sub{color:var(--text-sec);margin-bottom:var(--sp-6)}
+.email-link{
+  font-size:18px;font-weight:600;color:var(--accent);
+  border-bottom:2px solid transparent;
+  transition:border-color var(--transition);
+}
+.email-link:hover{border-color:var(--accent)}
+.social-links{display:flex;justify-content:center;gap:var(--sp-2);margin:var(--sp-4) 0 var(--sp-6)}
+.social-btn{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;transition:transform var(--transition),border-color var(--transition),box-shadow var(--transition);
+}
+.social-btn:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 4px 20px var(--accent-glow)}
+/* Contact form */
+.contact-form{display:flex;flex-direction:column;gap:var(--sp-2);text-align:left}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-2)}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:13px;font-weight:500;color:var(--text-sec)}
+.form-group input,
+.form-group textarea{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:12px 16px;font-size:15px;color:var(--text);font-family:'Outfit',sans-serif;
+  transition:border-color var(--transition),box-shadow var(--transition);
+  resize:none;
+}
+.form-group input:focus,
+.form-group textarea:focus{
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-glow);
+}
+.form-group textarea{height:120px}
+.btn-send{
+  padding:14px;border-radius:var(--radius-sm);font-size:15px;font-weight:600;
+  background:linear-gradient(135deg,var(--accent),var(--accent-teal));
+  color:#fff;transition:transform var(--transition),box-shadow var(--transition);
+  margin-top:var(--sp-1);
+}
+.btn-send:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--accent-glow)}
+.form-success{
+  display:none;text-align:center;padding:var(--sp-4);
+  background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.3);
+  border-radius:var(--radius);color:var(--accent-teal);font-weight:500;
+}
+
+/* ── Footer ────────────────────────────────────────────── */
+footer{
+  border-top:1px solid var(--border);padding:var(--sp-4);
+  text-align:center;font-size:14px;color:var(--text-muted);
+}
+footer span{color:var(--accent)}
+
+/* ── Mobile nav ────────────────────────────────────────── */
+@media(max-width:768px){
+  .nav-links{
+    display:none;flex-direction:column;gap:var(--sp-2);
+    position:fixed;top:64px;left:0;right:0;
+    background:var(--surface);border-bottom:1px solid var(--border);
+    padding:var(--sp-4);z-index:999;
+  }
+  .nav-links.open{display:flex}
+  .hamburger{display:flex}
+  #about .about-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .cert-edu-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAVBAR ───────────────────────────────────────────── -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">HN<span>.</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certifications">Certs & Edu</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+    <a href="mailto:hotenaveen@gmail.com" class="btn-hire">Hire me</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <h1 class="hero-name">Hote Naveen</h1>
+    <div class="hero-role" id="typewriter"></div>
+    <p class="hero-bio">Turning enterprise data into decisions — 8+ years bridging Finance, Operations, and Technology through analytics, ERP reporting, and BI solutions that actually move the needle.</p>
+    <div class="hero-ctas">
+      <a href="#experience" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        View my work
+      </a>
+      <a href="https://www.linkedin.com/in/hotenaveen-09b583376" target="_blank" class="btn-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn Profile
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ─────────────────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid fade-up">
+      <div>
+        <span class="currently-badge">Currently at Williams</span>
+        <div class="label" style="margin-bottom:8px">About me</div>
+        <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,38px);margin-bottom:var(--sp-3);line-height:1.2">Turning messy data into<br><em style="color:var(--accent)">strategic clarity.</em></h2>
+        <p class="about-bio">
+          With <strong>8+ years</strong> spanning banking at HDFC and enterprise analytics at Williams, I specialize in building reporting systems that leadership actually uses. My sweet spot is the intersection of <strong>ERP reporting, Power BI dashboards, and SQL-driven insights</strong> — converting sprawling enterprise data into clean, actionable intelligence. Currently completing my <strong>MBA from Indiana Institute of Technology</strong> to sharpen the business lens behind every query I write.
+        </p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">8+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">3</div>
+          <div class="stat-label">Companies Served</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">70%</div>
+          <div class="stat-label">Max Efficiency Gain</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">50%</div>
+          <div class="stat-label">Reporting Effort Cut (Williams)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">60%</div>
+          <div class="stat-label">Turnaround Improved (HDFC)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">MBA</div>
+          <div class="stat-label">Indiana Tech, 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ─────────────────────────────────────────── -->
+<section id="experience" style="background:var(--surface)">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="label">Career</div>
+      <h2 class="section-title">Experience</h2>
+    </div>
+    <div class="timeline">
+
+      <!-- Williams -->
+      <div class="tl-item open fade-up" id="tl0">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header" onclick="toggleTL('tl0')">
+            <div class="tl-company-info">
+              <div class="company-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">W</div>
+              <div>
+                <div class="tl-role">Senior Business Data Analyst / ERP Financial Reporting Analyst</div>
+                <div class="tl-company">Williams</div>
+              </div>
+            </div>
+            <div class="tl-meta">
+              <div class="tl-date">May 2025 – Present</div>
+              <div class="tl-date" style="color:var(--accent-teal);margin-top:2px">Current Role</div>
+            </div>
+            <span class="tl-chevron">▼</span>
+          </div>
+          <div class="tl-body">
+            <ul>
+              <li>Designed automated Power BI dashboards and reporting workflows that reduced manual reporting effort by <strong>50%</strong>, improving accuracy and operational visibility enterprise-wide.</li>
+              <li>Built SQL-based semantic data models enabling real-time analytics and executive-level performance monitoring across Finance, Operations, and IT.</li>
+              <li>Partnered with cross-functional stakeholders to gather reporting requirements and deliver scalable BI solutions supporting strategic planning and KPI tracking.</li>
+              <li>Conducted data validation, reconciliation, and root cause analysis to ensure reporting integrity and audit readiness across all enterprise reporting environments.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- HDFC Bank -->
+      <div class="tl-item fade-up" id="tl1">
+        <div class="tl-dot" style="background:var(--accent-teal);box-shadow:0 0 12px var(--teal-glow)"></div>
+        <div class="tl-card">
+          <div class="tl-header" onclick="toggleTL('tl1')">
+            <div class="tl-company-info">
+              <div class="company-avatar" style="background:linear-gradient(135deg,#2dd4bf,#06b6d4)">H</div>
+              <div>
+                <div class="tl-role">Assistant Manager</div>
+                <div class="tl-company">HDFC Bank</div>
+              </div>
+            </div>
+            <div class="tl-meta">
+              <div class="tl-date">Jan 2019 – May 2023</div>
+              <div class="tl-date" style="margin-top:2px;color:var(--text-muted)">4 yrs 5 mos · Hyderabad</div>
+            </div>
+            <span class="tl-chevron">▼</span>
+          </div>
+          <div class="tl-body">
+            <ul>
+              <li>Automated SQL and Excel-based reporting processes that improved efficiency by <strong>60%</strong> and dramatically reduced manual reporting turnaround.</li>
+              <li>Developed executive dashboards and KPI reporting solutions for Finance, Operations, Compliance, and senior leadership — spanning forecasting, variance analysis, and trend tracking.</li>
+              <li>Integrated ERP and enterprise data sources into centralized reporting environments to enable scalable BI and consistent reporting governance.</li>
+              <li>Supported UAT activities, reporting validation, and issue resolution for analytics enhancements; prepared executive summaries and performance reports for senior stakeholders.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nspira -->
+      <div class="tl-item fade-up" id="tl2">
+        <div class="tl-dot" style="background:#a78bfa;box-shadow:0 0 12px rgba(167,139,250,0.4)"></div>
+        <div class="tl-card">
+          <div class="tl-header" onclick="toggleTL('tl2')">
+            <div class="tl-company-info">
+              <div class="company-avatar" style="background:linear-gradient(135deg,#a78bfa,#ec4899)">N</div>
+              <div>
+                <div class="tl-role">Business Data Analyst / Financial Reporting Analyst</div>
+                <div class="tl-company">Nspira Management Services Pvt Ltd</div>
+              </div>
+            </div>
+            <div class="tl-meta">
+              <div class="tl-date">Jun 2014 – Jan 2019</div>
+              <div class="tl-date" style="margin-top:2px;color:var(--text-muted)">4 yrs 8 mos · Hyderabad</div>
+            </div>
+            <span class="tl-chevron">▼</span>
+          </div>
+          <div class="tl-body">
+            <ul>
+              <li>Improved reporting efficiency by <strong>70%</strong> through Excel VBA automation, SQL reporting enhancements, and standardized reporting frameworks across budgeting and revenue analysis workflows.</li>
+              <li>Developed automated financial reporting and analytics solutions for budgeting, revenue analysis, operational reporting, and executive decision-making.</li>
+              <li>Performed large-scale data reconciliation and validation across ERP and financial reporting systems, ensuring accuracy and consistency.</li>
+              <li>Assisted process improvement initiatives by identifying workflow inefficiencies and implementing reporting enhancements that elevated data quality.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ─────────────────────────────────────────────── -->
+<section id="skills">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="label">Toolkit</div>
+      <h2 class="section-title">Skills & Technologies</h2>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-group fade-up">
+        <div class="skill-group-title">// BI & Visualization</div>
+        <div class="pills">
+          <span class="pill">Power BI</span>
+          <span class="pill">Tableau</span>
+          <span class="pill">Excel Dashboards</span>
+          <span class="pill">KPI Reporting</span>
+        </div>
+        <div class="progress-items">
+          <div class="progress-item">
+            <div class="progress-label"><span>Power BI</span><span>95%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="95"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label"><span>Tableau</span><span>80%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="80"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-group fade-up">
+        <div class="skill-group-title">// Data & Databases</div>
+        <div class="pills">
+          <span class="pill">SQL</span>
+          <span class="pill">Microsoft SQL Server</span>
+          <span class="pill">Snowflake</span>
+          <span class="pill">T-SQL</span>
+        </div>
+        <div class="progress-items">
+          <div class="progress-item">
+            <div class="progress-label"><span>SQL / T-SQL</span><span>92%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="92"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label"><span>Snowflake</span><span>78%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="78"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-group fade-up">
+        <div class="skill-group-title">// ERP & Reporting</div>
+        <div class="pills">
+          <span class="pill">ERP Reporting</span>
+          <span class="pill">Financial Reporting</span>
+          <span class="pill">Variance Analysis</span>
+          <span class="pill">Forecasting</span>
+          <span class="pill">UAT Testing</span>
+        </div>
+      </div>
+
+      <div class="skill-group fade-up">
+        <div class="skill-group-title">// Productivity & Automation</div>
+        <div class="pills">
+          <span class="pill">Excel (Advanced)</span>
+          <span class="pill">Excel VBA</span>
+          <span class="pill">Power Query</span>
+          <span class="pill">DAX</span>
+          <span class="pill">SharePoint</span>
+        </div>
+        <div class="progress-items">
+          <div class="progress-item">
+            <div class="progress-label"><span>Excel / VBA</span><span>90%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="90"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-group fade-up">
+        <div class="skill-group-title">// Analytics Methods</div>
+        <div class="pills">
+          <span class="pill">Root Cause Analysis</span>
+          <span class="pill">Data Reconciliation</span>
+          <span class="pill">Trend Analysis</span>
+          <span class="pill">Operational Analytics</span>
+          <span class="pill">Process Improvement</span>
+        </div>
+      </div>
+
+      <div class="skill-group fade-up">
+        <div class="skill-group-title">// Cloud & Platforms</div>
+        <div class="pills">
+          <span class="pill">Google Vertex AI</span>
+          <span class="pill">Cloud Reporting</span>
+          <span class="pill">Data Warehousing</span>
+          <span class="pill">Semantic Modeling</span>
+        </div>
+        <div class="progress-items">
+          <div class="progress-item">
+            <div class="progress-label"><span>Cloud Analytics</span><span>72%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="72"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CERTIFICATIONS & EDUCATION ─────────────────────────── -->
+<section id="certifications" style="background:var(--surface)">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="label">Credentials</div>
+      <h2 class="section-title">Certifications & Education</h2>
+    </div>
+    <div class="cert-edu-grid">
+
+      <div class="ce-card fade-up">
+        <div class="ce-icon" style="background:rgba(99,102,241,0.15)">🎓</div>
+        <div>
+          <div class="ce-title">Master of Business Administration</div>
+          <div class="ce-issuer">Indiana Institute of Technology — Business Analyst Focus</div>
+          <div class="ce-year">Aug 2023 – May 2025</div>
+        </div>
+      </div>
+
+      <div class="ce-card fade-up">
+        <div class="ce-icon" style="background:rgba(45,212,191,0.15)">🎓</div>
+        <div>
+          <div class="ce-title">MBA — Finance & Marketing</div>
+          <div class="ce-issuer">Teegala Krishna Reddy Engineering College</div>
+          <div class="ce-year">Jun 2012 – Mar 2014</div>
+        </div>
+      </div>
+
+      <div class="ce-card fade-up">
+        <div class="ce-icon" style="background:rgba(167,139,250,0.15)">🎓</div>
+        <div>
+          <div class="ce-title">B.Com — Business / Commerce & Computers</div>
+          <div class="ce-issuer">Osmania University</div>
+          <div class="ce-year">Jun 2009 – Mar 2012</div>
+        </div>
+      </div>
+
+      <div class="ce-card fade-up">
+        <div class="ce-icon" style="background:rgba(99,102,241,0.15)">🏅</div>
+        <div>
+          <div class="ce-title">Prompt Design in Vertex AI</div>
+          <div class="ce-issuer">Google Cloud Skill Badge</div>
+          <div class="ce-year">Certification</div>
+        </div>
+      </div>
+
+      <div class="ce-card fade-up">
+        <div class="ce-icon" style="background:rgba(45,212,191,0.15)">❄️</div>
+        <div>
+          <div class="ce-title">Snowflake Hands-On Essentials</div>
+          <div class="ce-issuer">Data Warehousing Workshop — Snowflake</div>
+          <div class="ce-year">Certification</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ─────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner fade-up">
+      <div class="label" style="margin-bottom:8px">Get in touch</div>
+      <h2 class="contact-headline">Let's build something<br><span style="color:var(--accent)">together.</span></h2>
+      <p class="contact-sub">Open to ERP Business Analyst, Financial Reporting Analyst, BI Analyst, and Data Analytics roles. Let's talk.</p>
+      <a href="mailto:hotenaveen@gmail.com" class="email-link">hotenaveen@gmail.com</a>
+      <div class="social-links">
+        <a href="mailto:hotenaveen@gmail.com" class="social-btn" title="Email">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/hotenaveen-09b583376" target="_blank" class="social-btn" title="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </div>
+      <!-- Contact Form -->
+      <form class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">Name</label>
+            <input type="text" id="fname" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label for="femail">Email</label>
+            <input type="email" id="femail" placeholder="your@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="fsubject">Subject</label>
+          <input type="text" id="fsubject" placeholder="Role, opportunity, collaboration...">
+        </div>
+        <div class="form-group">
+          <label for="fmsg">Message</label>
+          <textarea id="fmsg" placeholder="Tell me about the role or project..." required></textarea>
+        </div>
+        <button type="submit" class="btn-send">Send Message →</button>
+      </form>
+      <div class="form-success" id="formSuccess">
+        ✓ Message sent! I'll get back to you within 24 hours.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <p>© 2025 <span>Hote Naveen</span> · Built with HTML & CSS · Driven by data, delivered with clarity.</p>
+</footer>
+
+<script>
+// ── Theme Toggle
+const root=document.documentElement,btn=document.getElementById('themeToggle');
+btn.addEventListener('click',()=>{
+  const dark=root.getAttribute('data-theme')==='dark';
+  root.setAttribute('data-theme',dark?'light':'dark');
+  btn.textContent=dark?'🌙':'☀️';
+});
+
+// ── Navbar scroll
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  navbar.classList.toggle('scrolled',window.scrollY>20);
+});
+
+// ── Mobile hamburger
+const ham=document.getElementById('hamburger'),nav=document.getElementById('navLinks');
+ham.addEventListener('click',()=>nav.classList.toggle('open'));
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+
+// ── Active nav highlight
+const sections=document.querySelectorAll('section[id]');
+const navAs=document.querySelectorAll('.nav-links a');
+function setActive(){
+  let cur='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});
+  navAs.forEach(a=>{
+    a.classList.toggle('active',a.getAttribute('href')==='#'+cur);
+  });
+}
+window.addEventListener('scroll',setActive);
+
+// ── Intersection Observer fade-up
+const fadeEls=document.querySelectorAll('.fade-up');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      // animate progress bars when visible
+      e.target.querySelectorAll('.progress-fill').forEach(bar=>{
+        bar.style.width=bar.dataset.width+'%';
+      });
+      obs.unobserve(e.target);
+    }
+  });
+},{threshold:0.12});
+fadeEls.forEach(el=>obs.observe(el));
+
+// Also trigger bars in already-visible skill groups on scroll
+document.querySelectorAll('.progress-fill').forEach(bar=>{
+  bar.style.width='0%';
+});
+
+// ── Typewriter
+const roles=['ERP Business Analyst','Financial Reporting Analyst','Power BI Developer','Business Intelligence Analyst'];
+let ri=0,ci=0,del=false;
+const tw=document.getElementById('typewriter');
+function type(){
+  const word=roles[ri];
+  if(!del){
+    tw.textContent=word.slice(0,ci+1);
+    ci++;
+    if(ci===word.length){del=true;setTimeout(type,1800);return}
+  } else {
+    tw.textContent=word.slice(0,ci-1);
+    ci--;
+    if(ci===0){del=false;ri=(ri+1)%roles.length}
+  }
+  setTimeout(type,del?60:90);
+}
+type();
+
+// ── Timeline accordion
+function toggleTL(id){
+  const item=document.getElementById(id);
+  item.classList.toggle('open');
+}
+
+// ── Contact form (mailto fallback)
+document.getElementById('contactForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const name=document.getElementById('fname').value;
+  const email=document.getElementById('femail').value;
+  const subject=document.getElementById('fsubject').value||'Portfolio Contact';
+  const msg=document.getElementById('fmsg').value;
+  const body=`Name: ${name}\nEmail: ${email}\n\n${msg}`;
+  window.location.href=`mailto:hotenaveen@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  document.getElementById('contactForm').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+});
+</script>
+</body>
+</html>
